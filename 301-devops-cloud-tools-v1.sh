@@ -9,7 +9,7 @@ echo "Install various DevOps and cloud tools"
 echo "--------------------------------------"
 
 sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed terraform vagrant packer helm
+sudo pacman -S --noconfirm --needed terraform vagrant packer helm argocd
 yay -S --noconfirm bicep azcopy
 curl -L https://aka.ms/InstallAzureCli | bash
 
