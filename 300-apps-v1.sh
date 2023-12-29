@@ -4,8 +4,9 @@ set -e
 # Author 	: 	Michael Melchers
 ##################################################################################################################
 
+echo "--------------------------------------"
 echo "Install various applications and tools"
-echo "----------------------------"
+echo "--------------------------------------"
 
 sudo pacman -Syyu
 sudo pacman -S --noconfirm --needed chromium firefox firefox-i18n-de

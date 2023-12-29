@@ -5,16 +5,19 @@
 ##################################################################################################################
 
 # checking if I have the latest files from github
+echo "-------------------------------------"
 echo "Checking for newer files online first"
+echo "-------------------------------------"
+
 git pull
 
 # Below command will backup everything inside the project folder
 git add --all .
 
 # Give a comment to the commit if you want
-echo "####################################"
+echo "--------------------------"
 echo "Write your commit comment!"
-echo "####################################"
+echo "--------------------------"
 
 read input
 
@@ -24,9 +27,8 @@ git commit -m "$input"
 
 # Push the local files to github
 
-git push -u origin main
+git push -u origin master
 
-
-echo "################################################################"
-echo "###################    Git Push Done      ######################"
-echo "################################################################"
+echo "-----------------------------------------"
+echo "----------    Git Push Done    ----------"
+echo "-----------------------------------------"
