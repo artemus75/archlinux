@@ -10,7 +10,6 @@ echo "--------------------------------------"
 
 sudo pacman -Syyu
 sudo pacman -S --noconfirm --needed terraform vagrant packer helm argocd
-yay -S --noconfirm bicep azcopy
-curl -L https://aka.ms/InstallAzureCli | bash
+yay -S --noconfirm bicep azcopy azure-cli-bin
 
 yay -S --noconfirm storageexplorer azuredatastudio-bin visual-studio-code-bin
