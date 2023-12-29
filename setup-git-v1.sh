@@ -4,8 +4,8 @@ set -e
 # Author 	: 	Michael Melchers
 ##################################################################################################################
 
-read name
-read email
+echo "Enter your name: " && read name
+echo "Enter your email: " && read email
 
 git init
 git config --global user.name "$name"
