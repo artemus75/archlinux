@@ -10,4 +10,4 @@ echo "----------------------------"
 
 sudo pacman -Syyu
 sudo pacman -S --noconfirm --needed pipewire-pulse pipewire-alsa
-sudo pacman -S --nocnnfirm --needed vlc
+sudo pacman -S --noconfirm --needed vlc
