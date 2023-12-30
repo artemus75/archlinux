@@ -2,6 +2,7 @@
 set -e
 ##################################################################################################################
 # Author 	: 	Michael Melchers
+# Date      :   2023-12-29
 ##################################################################################################################
 
 echo "--------------------------------------"
@@ -13,5 +14,3 @@ sudo pacman -S --noconfirm --needed chromium firefox firefox-i18n-de
 sudo pacman -S --noconfirm --needed file-roller p7zip zip unzip unrar
 sudo pacman -S --noconfirm --needed konsole kate neofetch nano exa
 sudo pacman -S --noconfirm --needed curl rsync latte-dock
-
-yay -S --noconfirm obsidian-bin
