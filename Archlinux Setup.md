@@ -9,6 +9,10 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_fÃ
 	```
 	$ loadkeys de-latin1-nodeadkeys
 	```
+- Check if you have UEFI mode enabled
+	```
+	$ ls /sys/firmware/efi/efivars
+	```
 - list block devices
 	```
 	$ lsblk
@@ -21,26 +25,29 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_fÃ
 		- n (new partition)
 		- Enter (partition ID 1)
 		- Enter (default first sector)
-		- +250M (last sector and size for this partition)
+		- +512M (last sector and size for this partition)
+	- Change partition type for BOOT
+		- t
+		- 1
 	- BTRFS partition
 		- n (new partition)
 		- Enter (partition ID 2)
 		- Enter (default first sector)
-		- +28G (last sector and size for this partition)
+		- +224G (last sector and size for this partition)
 	- SWAP partition
 		- n (new partition)
 		- Enter (partition ID 3)
 		- Enter (default last free sector)
 	- Change partition type for SWAP
 		- t
-		- 82
+		- 19
 	- Print the new partition layout
 		- p
 	- Write the new partition layout
 		- w
 - Create the file systems on the new partitions
 	```
-	mkfs.ext4 -L BOOT /dev/sda1
+	mkfs.fat -F32 -n BOOT /dev/sda1
 	mkfs.btrfs -L ROOT /dev/sda2
 	mkswap -L SWAP /dev/sda3
 	```
@@ -90,9 +97,12 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_fÃ
 	```
 	pacman -S grub
 	pacman -S dosfstools efibootmgr mtools
+	mkdir -p /boot/efi
+	mount /dev/sda1 /boot/efi
+	grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
 	mkdir -p /boot/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
-	grub-install /dev/sda
+	
 	echo arch-demo-1 > /etc/hostname
 	echo LANG=de_DE.UTF-8 > /etc/locale.conf
 	echo LANGUAGE=de_DE >> /etc/locale.conf
