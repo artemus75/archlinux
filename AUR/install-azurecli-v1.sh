@@ -22,7 +22,7 @@ else
   if pacman -Qi yay &> /dev/null; then
 
     echo "Installing $package with yay"
-    yay -S --noconfirm --noeditmenu $package
+    yay -S --noconfirm $package
 fi
 
 	# Just checking if installation was successful
