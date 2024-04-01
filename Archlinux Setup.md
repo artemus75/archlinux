@@ -48,12 +48,20 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_f√
 - Create the file systems on the new partitions
 	```
 	mkfs.fat -F32 -n BOOT /dev/sda1
-	mkfs.btrfs -L ROOT /dev/sda2
+	mkfs.btrfs -L ROOT /dev/sda2 #Skip this step if encrypted partion will be used
 	mkswap -L SWAP /dev/sda3
+
+	#In case you want to encrypt the BTRFS partion, follow these steps:
+	cryptsetup luksFormat /dev/sda2
+	cryptsetup luksOpen /dev/sda2 cryptroot
+	mkfs.btrfs -L ROOT /dev/mapper/cryptroot
 	```
 - Mount the BTRFS partition
 	```
 	mount /dev/sda2 /mnt
+
+	#In case of a encrypted partition use this command:
+	mount /dev/mapper/cryptrool /mnt
 	```
 - Create the Btrfs subvolumes
 	```
@@ -120,6 +128,23 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_f√
 	passwd
 	useradd -m -g users -G wheel,audio,video -s /bin/bash michael
 	passwd michael
+
+	#In case you use an encrypted partition:
+	nano /etc/mkinitcpio.conf
+		add the following:
+		MODULES=(btrfs)
+		# before the filesystems hook
+		HOOKS=(...block encrypt filesystems...)
+	mkinitcpio -p linux
+
+	blkid
+	#Note the UUID of the encrypted partition
+
+	nano /etc/default/grub
+		#edit the line starting with "GRUB_CMDLINE_LINUX_DEFAULT="
+		GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet cryptdevice=UUID=<id>:cryptroot root=/dev/mapper/cryptroot"
+	grub-mkconfig -o /boot/grub/grub.cfg
+	
 	exit
 	umount /mnt/boot
 	reboot
