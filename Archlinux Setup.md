@@ -60,7 +60,7 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_f√
 	```
 	mount /dev/sda2 /mnt
 
-	#In case of a encrypted partition use this command:
+	#In case of an encrypted partition use this command:
 	mount /dev/mapper/cryptrool /mnt
 	```
 - Create the Btrfs subvolumes
@@ -75,6 +75,8 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_f√
 	ls /mnt
 	umount /mnt
 	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@ /dev/sda2 /mnt
+	#In case of an encrypted partition use this command:
+	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@ /dev/mapper/cryptroot /mnt
 	mkdir -p /mnt/boot
 	mkdir -p /mnt/home
 	mkdir -p /mnt/var/cache/pacman/pkg
@@ -84,6 +86,11 @@ Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_f√
 	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@pkg /dev/sda2 /mnt/var/cache/pacman/pkg
 	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@snapshots /dev/sda2 /mnt/.snapshots
 	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvolid=5 /dev/sda2 /mnt/btrfs
+	#In case of an encrypted partition use this command:
+	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@home /dev/mapper/cryptroot /mnt/home
+	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@pkg /dev/mapper/cryptroot /mnt/var/cache/pacman/pkg
+	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvol=@snapshots /dev/mapper/cryptroot /mnt/.snapshots
+	mount -o noatime,ssd,space_cache=v2,compress=lzo,subvolid=5 /dev/mapper/cryptroot /mnt/btrfs
 	mount /dev/sda1 /mnt/boot/
 	swapon /dev/sda3
 	free -h
