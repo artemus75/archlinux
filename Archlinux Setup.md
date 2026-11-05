@@ -1,3 +1,7 @@
+> **Legacy / unvalidated guide:** This document is retained for historical reference only. It contains inconsistent EFI mountpoints and encrypted-root instructions and should **not** be followed as-is. See [the proposed UEFI + Btrfs + optional LUKS installation guide](docs/installation-uefi-btrfs.md). Validate that draft in a disposable UEFI VM before using it on a real machine.
+
+---
+
 Instruction to install Archlinux with BTRFS filesystem.
 
 Please also use the Archlinux Wiki: https://wiki.archlinux.de/title/Anleitung_für_Einsteiger
