@@ -1,0 +1,30 @@
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.kubeconfig
+kubeconfig
+
+# Local editor and operating-system state
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Package/build artifacts and downloaded vendor installers
+*.pkg.tar.*
+*.vbox-extpack
+*.iso
+*.AppImage
+*.deb
+*.rpm
+
+# Local temporary and log files
+*.log
+*.tmp
