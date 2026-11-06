@@ -1,23 +1,35 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "-----------"
-echo "Install yay"
-echo "-----------"
+# AUR packages are user-built and are not supported by Arch Linux.
+# Inspect the PKGBUILD and related files before invoking makepkg.
 
-mkdir ~/AUR
-cd ~/AUR
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-cd ~
+if (( EUID == 0 )); then
+  printf 'Do not build AUR packages as root.\n' >&2
+  exit 1
+fi
 
-echo "---------------------------------------------------"
-echo "Check installation of yay by displaying the version"
-echo "---------------------------------------------------"
+if command -v yay >/dev/null 2>&1; then
+  yay --version
+  exit 0
+fi
 
-yay --version
+sudo pacman -S --needed base-devel git
+
+aur_dir="${XDG_CACHE_HOME:-$HOME/.cache}/archlinux-setup/aur"
+mkdir -p "$aur_dir"
+
+if [[ ! -d "$aur_dir/yay/.git" ]]; then
+  if [[ -e "$aur_dir/yay" ]]; then
+    printf 'Refusing to overwrite existing non-git path: %s\n' "$aur_dir/yay" >&2
+    exit 1
+  fi
+  git clone https://aur.archlinux.org/yay.git "$aur_dir/yay"
+fi
+
+cd "$aur_dir/yay"
+git fetch --ff-only origin
+git merge --ff-only origin/HEAD
+printf '\nReview PKGBUILD and all build/install scripts in %s before continuing.\n' "$PWD"
+printf 'No package has been built or installed automatically.\n'
+printf 'After review, run manually: cd %q && makepkg -si\n' "$PWD"
