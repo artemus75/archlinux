@@ -1,13 +1,9 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date          :       2025-09-01
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "----------------------------"
-echo "Install various system tools"
-echo "----------------------------"
+if (( EUID == 0 )); then
+  printf 'Run as a regular user with sudo access, not as root.\n' >&2
+  exit 1
+fi
 
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed usbutils
+sudo pacman -S --needed usbutils
