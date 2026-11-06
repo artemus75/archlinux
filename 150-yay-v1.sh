@@ -28,8 +28,7 @@ if [[ ! -d "$aur_dir/yay/.git" ]]; then
 fi
 
 cd "$aur_dir/yay"
-git fetch --ff-only origin
-git merge --ff-only origin/HEAD
+git pull --ff-only
 printf '\nReview PKGBUILD and all build/install scripts in %s before continuing.\n' "$PWD"
 printf 'No package has been built or installed automatically.\n'
 printf 'After review, run manually: cd %q && makepkg -si\n' "$PWD"
