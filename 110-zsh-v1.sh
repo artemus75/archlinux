@@ -1,25 +1,13 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "-----------"
-echo "Install ZSH"
-echo "-----------"
+if (( EUID == 0 )); then
+  printf 'Run as your regular user, not root.\n' >&2
+  exit 1
+fi
 
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed zsh
-
-echo "-------------------"
-echo "Change shell to zsh"
-echo "-------------------"
-
-sudo chsh -s /bin/zsh michael
-
-echo "-----------------"
-echo "Install Oh-my-zsh"
-echo "-----------------"
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo pacman -Syu --needed zsh
+printf 'Zsh installed. Change your login shell manually after checking /etc/shells:\n'
+printf '  chsh -s /usr/bin/zsh\n'
+printf 'Oh My Zsh is optional. Review its upstream installer before running it.\n'
+printf '  https://github.com/ohmyzsh/ohmyzsh\n'
