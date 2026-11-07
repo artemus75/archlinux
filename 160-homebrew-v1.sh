@@ -1,25 +1,18 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "----------------"
-echo "Install Homebrew"
-echo "----------------"
+# Homebrew is optional on Arch; do not execute a remote script automatically.
+if (( EUID == 0 )); then
+  printf 'Run as your regular user, not root.\n' >&2
+  exit 1
+fi
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.zshrc
+if command -v brew >/dev/null 2>&1; then
+  brew --version
+  exit 0
+fi
 
-echo "--------------------------------------------------------"
-echo "Check installation of Homebrew by displaying the version"
-echo "--------------------------------------------------------"
-
-brew --version
-
-echo "----------------"
-echo "Install Starship"
-echo "----------------"
+printf 'Homebrew is not installed. Review the official Linux instructions first:\n'
+printf '  https://docs.brew.sh/Homebrew-on-Linux\n'
+printf 'No remote installer has been downloaded or executed.\n'
+printf 'Starship is a separate optional package, not installed by this script.\n'
