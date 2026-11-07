@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Use the official pacman repository where available.
-sudo pacman -S --needed kubectl kubectx
+sudo pacman -Syu --needed kubectl kubectx
 
 # kubecolor may be sourced from the AUR, depending on current repository availability.
 # Avoid unattended AUR builds; inspect the PKGBUILD before installing it.
