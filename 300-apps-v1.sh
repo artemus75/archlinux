@@ -1,19 +1,14 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "--------------------------------------"
-echo "Install various applications and tools"
-echo "--------------------------------------"
+# KDE-oriented application selection. Use a normal full system upgrade (not forced -Syyu); no unattended approvals.
+# Older packages neofetch, exa, latte-dock and p7zip were removed from this list.
+sudo pacman -Syu --needed \
+  chromium firefox firefox-i18n-de \
+  ark zip unzip unrar \
+  konsole kate nano \
+  curl rsync \
+  kcalc spectacle \
+  npm libfido2
 
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed chromium firefox firefox-i18n-de
-sudo pacman -S --noconfirm --needed file-roller p7zip zip unzip unrar
-sudo pacman -S --noconfirm --needed konsole kate neofetch nano exa
-sudo pacman -S --noconfirm --needed curl rsync latte-dock
-sudo pacman -S --noconfirm --needed ark p7zip unrar unzip
-sudo pacman -S --noconfirm --needed kcalc spectacle localsend
-sudo pacman -S --noconfirm --needed npm libfido2 glibc
+# Optional packages such as localsend should be reviewed separately for availability.

@@ -1,13 +1,7 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "--------------------------------------"
-echo "Install various DevOps and cloud tools"
-echo "--------------------------------------"
-
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed terraform vagrant packer helm argocd
+# Only packages available in the configured pacman repositories will be installed.
+# Terraform/HashiCorp licensing and repository availability must be reviewed separately.
+sudo pacman -Syu --needed vagrant helm
+printf 'Review terraform, packer and argocd package sources before installing them.\n'

@@ -1,21 +1,13 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "-------------------------------------------------"
-echo "Install KDE Plasma desktop and SDDM login manager"
-echo "-------------------------------------------------"
+# KDE Plasma desktop with SDDM. Does not replace an active display manager.
+sudo pacman -Syu --needed plasma-meta sddm sddm-kcm noto-fonts
 
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed plasma-desktop plasma plasma-meta
-sudo pacman -S --noconfirm --needed sddm sddm-kcm
-sudo pacman -S --noconfirm --needed noto-fonts breeze-grub
-
-echo "-----------------------"
-echo "Enable the SDDM service"
-echo "-----------------------"
-
-sudo systemctl enable sddm.service -f
+if systemctl is-enabled --quiet display-manager.service; then
+  current="$(systemctl show -p FragmentPath --value display-manager.service)"
+  printf 'Existing display manager configuration: %s\n' "$current"
+  printf 'Not changing the existing display manager automatically.\n'
+else
+  sudo systemctl enable sddm.service
+fi

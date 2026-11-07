@@ -1,24 +1,13 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "---------------"
-echo "Install kubectl"
-echo "---------------"
+# Use the official pacman repository where available.
+sudo pacman -Syu --needed kubectl kubectx
 
-yay -S --noconfirm kubectl
-
-echo "---------------"
-echo "Install kubectx"
-echo "---------------"
-
-yay -S --noconfirm kubectx
-
-echo "-----------------"
-echo "Install kubecolor"
-echo "-----------------"
-
-yay -S --noconfirm kubecolor
+# kubecolor may be sourced from the AUR, depending on current repository availability.
+# Avoid unattended AUR builds; inspect the PKGBUILD before installing it.
+if command -v kubecolor >/dev/null 2>&1; then
+  kubecolor --version
+else
+  printf 'kubecolor not installed; review its current package source manually.\n'
+fi
