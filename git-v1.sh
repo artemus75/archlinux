@@ -1,34 +1,36 @@
-#!/bin/bash
-#set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-# checking if I have the latest files from github
-echo "-------------------------------------"
-echo "Checking for newer files online first"
-echo "-------------------------------------"
+# Explicit staging avoids committing unrelated files and secrets by accident.
+if [[ $# -lt 1 ]]; then
+  printf 'Usage: %s <path> [<path> ...]\n' "$0" >&2
+  exit 2
+fi
 
-git pull
+git rev-parse --is-inside-work-tree >/dev/null
+branch="$(git branch --show-current)"
+if [[ -z "$branch" ]]; then
+  printf 'Detached HEAD: refusing to push.\n' >&2
+  exit 1
+fi
 
-# Below command will backup everything inside the project folder
-git add --all .
+git pull --ff-only
+git add -- "$@"
+git diff --cached --check
+git diff --cached --stat
+git diff --cached --name-only
 
-# Give a comment to the commit if you want
-echo "--------------------------"
-echo "Write your commit comment!"
-echo "--------------------------"
+if git diff --cached --quiet; then
+  printf 'No staged changes.\n'
+  exit 0
+fi
 
-read input
+printf 'Review the staged diff with: git diff --cached\n'
+read -r -p 'Commit message (empty cancels): ' message
+if [[ -z "$message" ]]; then
+  printf 'Cancelled. Changes remain staged for review.\n'
+  exit 0
+fi
 
-# Committing to the local repository with a message containing the time details and commit text
-
-git commit -m "$input"
-
-# Push the local files to github
-
-git push -u origin main
-
-echo "-----------------------------------------"
-echo "----------    Git Push Done    ----------"
-echo "-----------------------------------------"
+git commit -m "$message"
+printf 'Commit created locally on branch %s. Push manually after review.\n' "$branch"
