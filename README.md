@@ -1,31 +1,42 @@
-# Arch Linux personal setup
+# Arch Linux — personal setup
 
-This repository documents a personal Arch Linux installation and optional post-install scripts. It is **not** an unattended installer, a supported distribution, or a validated configuration for arbitrary hardware.
+This repository records a personal Arch Linux workstation installation. It is **not** an unattended installer, a supported distribution, or a hardware-independent setup. Review scripts before executing them.
 
-## Installation
+## Repository layout
 
-Start with [the UEFI/Btrfs installation guide](docs/installation-uefi-btrfs.md). The original [Archlinux Setup.md](Archlinux%20Setup.md) is legacy material and must not be executed unchanged. The new guide has not yet passed the planned VM boot tests.
+| Path | Purpose |
+| --- | --- |
+| [docs/installation-uefi-btrfs.md](docs/installation-uefi-btrfs.md) | UEFI, Btrfs and optional LUKS2 base installation; **not boot-tested yet** |
+| [scripts/post-install/](scripts/post-install/) | Optional system, desktop and application setup scripts |
+| [scripts/aur/](scripts/aur/) | Optional interactive AUR package wrappers |
+| [scripts/git/](scripts/git/) | Repository-local Git setup and explicit-staging commit helper |
+| [docs/package-review.md](docs/package-review.md) | Deferred package-source decisions and final validation checklist |
+| [docs/repository-hygiene.md](docs/repository-hygiene.md) | Security/hygiene review and outstanding actions |
+| [SECURITY.md](SECURITY.md) | Security reporting guidance |
 
-## Post-install scripts
+The older [Archlinux Setup.md](Archlinux%20Setup.md) remains only for historical reference; do not follow it as-is.
 
-The numbered root scripts install selected workstation components. They are independent, **not** a single ordered bootstrap program. Read each script before running it; some modify system packages or enable services. Arch Linux requires full upgrades rather than partial upgrades. Scripts do not run automatically.
+## Suggested sequence
 
-The `AUR/` scripts provide optional, interactive package installation wrappers. AUR packages are community-maintained; review the PKGBUILD and upstream sources before approving a build. Package names and availability have **not** been validated against current repositories.
+1. Read the [base installation guide](docs/installation-uefi-btrfs.md) and adapt it to the target hardware. It is unvalidated.
+2. Review the individual scripts in `scripts/post-install/` before running any. They are **optional**, not a single automated installer. Their numeric prefixes are a historical grouping, not a guaranteed dependency order.
+3. For AUR software, inspect package sources and PKGBUILDs; then run only the desired wrapper in `scripts/aur/`. Never run AUR helpers as root.
+4. Git helper scripts are separate and optional; they do not automatically push or modify system-wide Git settings.
 
-## Security boundaries and intentional omissions
+Example **inspection only**:
 
-- Oh My Zsh and Homebrew: no unattended `curl | sh` execution. Review the official installation instructions manually.
-- Warp Terminal: no automatic pacman repository or signing-key trust modification. Verify the vendor key fingerprint independently.
-- Git setup: repository-local author configuration only; no global/system changes.
-- Git commit helper: stage explicitly named paths, no automatic push.
-- Some previously installed applications are omitted until their current package source is confirmed. See [package review](docs/package-review.md).
-- The VirtualBox Extension Pack binary was removed from the current tree, not from Git history.
-- See [SECURITY.md](SECURITY.md) and [repository hygiene](docs/repository-hygiene.md).
+```bash
+sed -n '1,200p' scripts/post-install/100-network-v1.sh
+bash -n scripts/post-install/100-network-v1.sh
+```
 
-## Validation status
+## Safety and validation
 
-**Deferred until cleanup is complete:** real Arch Linux installation tests, package availability checks, shell script execution, and UEFI/LUKS boot validation. GitHub Actions performs static Bash syntax and ShellCheck analysis; a passing lint run does not demonstrate that installations work.
+- Package installs and system-service changes can affect a running workstation. Back up first.
+- External installer scripts (Oh My Zsh, Homebrew) and the Warp signing-key setup are **not automatically executed**.
+- Some former application packages remain excluded until their current sources are reviewed.
+- CI performs `bash -n` and ShellCheck for all `scripts/**/*.sh`. This is static checking only.
+- **All practical validation is deferred until cleanup is complete:** UEFI VM boot tests (with/without LUKS), package availability, actual script execution and idempotency.
+- Repository history secret scanning, admin security settings and licensing are still separate open decisions. No open-source license has been granted.
 
-## License
-
-No license has been selected for this repository. Do not assume the contents are available under an open-source license.
+See [the validation checklist](docs/validation-checklist.md) for the later test campaign.
