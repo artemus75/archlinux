@@ -18,7 +18,7 @@ jobs:
       - name: Check migrated scripts
         run: |
           set -euo pipefail
-          scripts=(100-network-v1.sh 121-system-tools-v1.sh 150-yay-v1.sh 302-vbox-v1.sh git-v1.sh 120-file-system-protocols-v1.sh 200-display-manager-and-desktop-v1.sh 300-apps-v1.sh 301-devops-tools-v1.sh 310-office-apps-v1.sh 320-audio-video-apps-v1.sh 330-kubectl-v1.sh)
+          scripts=( ./*.sh AUR/*.sh )
           for script in "${scripts[@]}"; do
             bash -n "$script"
           done
