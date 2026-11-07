@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # KDE Plasma desktop with SDDM. Does not replace an active display manager.
-sudo pacman -S --needed plasma-meta sddm sddm-kcm noto-fonts
+sudo pacman -Syu --needed plasma-meta sddm sddm-kcm noto-fonts
 
 if systemctl is-enabled --quiet display-manager.service; then
   current="$(systemctl show -p FragmentPath --value display-manager.service)"
