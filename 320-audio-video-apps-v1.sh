@@ -1,14 +1,5 @@
-#!/bin/bash
-set -e
-##################################################################################################################
-# Author 	: 	Michael Melchers
-# Date      :   2023-12-29
-##################################################################################################################
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo "----------------------------"
-echo "Install audio and video apps"
-echo "----------------------------"
-
-sudo pacman -Syyu
-sudo pacman -S --noconfirm --needed pipewire-pulse pipewire-alsa
-sudo pacman -S --noconfirm --needed vlc
+# Confirm any PipeWire/PulseAudio migration on an existing workstation.
+sudo pacman -S --needed pipewire-pulse pipewire-alsa vlc
