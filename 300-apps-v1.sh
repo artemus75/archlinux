@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# KDE-oriented application selection. No full database refresh or unattended approvals.
+# KDE-oriented application selection. Use a normal full system upgrade (not forced -Syyu); no unattended approvals.
 # Older packages neofetch, exa, latte-dock and p7zip were removed from this list.
-sudo pacman -S --needed \
+sudo pacman -Syu --needed \
   chromium firefox firefox-i18n-de \
   ark zip unzip unrar \
   konsole kate nano \
