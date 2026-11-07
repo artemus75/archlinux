@@ -2,4 +2,4 @@
 set -euo pipefail
 
 # Confirm any PipeWire/PulseAudio migration on an existing workstation.
-sudo pacman -S --needed pipewire-pulse pipewire-alsa vlc
+sudo pacman -Syu --needed pipewire-pulse pipewire-alsa vlc
